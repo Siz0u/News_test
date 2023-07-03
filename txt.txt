@@ -1,0 +1,88 @@
+u1 = User.objects.create('Siz1')
+u2 = User.objects.create('Siz2')
+
+a1 = Author.objects.create(authorUser = u1)
+a2 = Author.objects.create(authorUser = u2)
+
+categoryIT = Category.objects.create(name='IT')
+categoryJOB = Category.objects.create(name='JOB')
+categoryPYTHON = Category.objects.create(name='PYTHON')
+categorySKILLFACTORY = Category.objects.create(name='SKILLFACTORY')
+
+p1 = Post.objects.create(author = a1, categoryType = 'NW', title = 'sometitle1', text = 'sometext1')
+p2 = Post.objects.create(author = a2, categoryType = 'AR', title = 'sometitle2', text = 'sometext2')
+p3 = Post.objects.create(author = a1, categoryType = 'AR', title = 'sometitle3', text = 'sometext3')
+
+p1.postCategory.add(categoryIT, categoryJOB)
+p2.postCategory.add(categorySKILLFACTORY, categoryPYTHON, categoryJOB)
+p3.postCategory.add(categoryPYTHON, categoryIT)
+
+с1 = Comment.objects.create(commentPost = p1, commentUser = u2, text = 'comment1underpost1')
+с2 = Comment.objects.create(commentPost = p2, commentUser = u2, text = 'comment1underpost2')
+с3 = Comment.objects.create(commentPost = p1, commentUser = u1, text = 'comment2underpost1')
+с4 = Comment.objects.create(commentPost = p3, commentUser = u2, text = 'comment1underpost3')
+
+p1.like()
+p1.like()
+p1.like()
+p1.like()
+p1.like()
+
+p2.dislike()
+p2.dislike()
+p2.dislike()
+p2.dislike()
+p2.dislike()
+
+p3.like()
+p3.like()
+p3.like()
+p3.like()
+p3.like()
+
+c1.dislike()
+c1.dislike()
+c1.dislike()
+c1.dislike()
+c1.dislike()
+
+c3.like()
+c3.like()
+c3.like()
+c3.like()
+c3.like()
+
+c2.dislike()
+c2.dislike()
+c2.dislike()
+c2.dislike()
+c2.dislike()
+
+c4.dislike()
+c4.dislike()
+c4.dislike()
+c4.dislike()
+c4.dislike()
+
+a1.update_rating()
+a2.update_rating()
+
+oAuthor = Author.objects.order_by('-ratingAuthor')[:1]
+	for i in oAuthor:
+		i.authorUser.username
+		i.ratingAuthor
+
+oPost = Post.objects.filter(categoryType = 'AR').order_by('-rating')[:1]
+	for i in oPost:
+		i.dateCreation.strftime("%Y-%m-%d %H:%M")
+		i.author.authorUser
+		i.rating
+		i.title
+		i.preview()
+
+oComment = Comment.objects.filter(commentPost = oPost)
+	for i in oComment:
+		i.dateCreation.strftime("%Y-%m-%d %H:%M")
+		i.commentUser
+		i.rating
+		i.text
