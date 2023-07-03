@@ -13,11 +13,20 @@ class Author(models.Model):
         author_comments_rating = Comment.objects.filter(commentUser_id=self.authorUser).aggregate(Sum('rating'))
         author_post_comments_rating = Comment.objects.filter(commentPost__author__authorUser=self.authorUser).aggregate(Sum('rating'))
 
-        print(author_posts_rating)
+        print('Posts rating')
+        print(author_posts_rating['rating__sum'])
         print('---------------')
-        print(author_comments_rating)
+        print('Comments rating')
+        print(author_comments_rating['rating__sum'])
         print('---------------')
-        print(author_post_comments_rating)
+        print('Comments under posts rating')
+        print(author_post_comments_rating['rating__sum'])
+        print('---------------')
+        print('Full rating')
+        rating = (author_posts_rating['rating__sum'] + author_comments_rating['rating__sum'] + author_post_comments_rating['rating__sum'])
+        print(rating)
+        self.ratingAuthor = rating
+        self.save()
 
 
 class Category(models.Model):
@@ -49,7 +58,7 @@ class Post(models.Model):
         self.save()
 
     def preview(self):
-        return '{} ... {}'.format(self.text[0:123], str(self.rating))
+        return self.text[0:123] + '...'
 
 
 class PostCategory(models.Model):
